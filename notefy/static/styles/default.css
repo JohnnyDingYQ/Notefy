@@ -2,3 +2,19 @@
 	margin: 0;
 	font-family: Impact;
 }
+
+::placeholder {
+	color: #DDD;
+}
+
+input:focus{
+	outline-width: 0;
+}
+
+button:focus{
+	outline-width: 0;
+}
+
+ul{
+	list-style: none;
+}
