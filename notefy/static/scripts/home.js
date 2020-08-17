@@ -54,17 +54,16 @@ function animate_arrow(terminate){
 	//login and signup button onclick
 	$(".button-blue, .button-orange").on("click", function(){
 		if ($(this).hasClass("button-blue")) {
-			var container_to_show = ".login-container"
+			$(".escaper-1, .showcase-container, .scrolldown-arrow").toggle() //hide elements below to prevent scroll. Also hides arrow
+			$(".login-shade").fadeIn(600).css("display", "flex")  //show shade and login/signup box
 		}else{
-			var container_to_show = ".signup-container"
+			window.location.href = "/signup"
 		}
-		$(".escaper-1, .showcase-container, .scrolldown-arrow, .login-container").toggle() //hide elements below to prevent scroll. Also hides arrow
-		$(".login-signup-shade, " + container_to_show + "").fadeIn(600)  //show shade and login/signup box
 	})
 
 
-	//customize school select for student signin
-
+	//customize school select for student signup
+	var schools  = ["YKPao School", "SUIS", "YKPao Secondary School", "Deep Dark Fantasy", "NOT YKPAO E", "New Spenceland", "Spenceloavania", "I need more e"]
 	//add click event to newly added suggestions
 	function bind_school_autocomplete(){
 		$(".school-select").find("li").on("click", function(){
@@ -72,20 +71,18 @@ function animate_arrow(terminate){
 			$(".school-select").children("ul").empty().css("display", "none")
 		})
 	}
-	
-	var schools  = ["YKPao School", "SUIS", "YKPao Secondary School"]
-	
+
 	var suggestion_list = $(".school-select").children("ul")
 	$(".school-select").children("input").on("input", function(){
 		suggestion_list.empty() //delete all suggestions before appending new ones
 		if ($(this).val() !== "") {
+			var found = false
 			var user_input = $(this).val().toUpperCase()
 			schools.forEach(function(item, index){
-				var found = false
 				if (item.toUpperCase().indexOf(user_input) !== -1) {
 					suggestion_list.append("<li>" + item +"</li>")
 					suggestion_list.css("display", "block") //show suggestions
-					var found = true
+					found = true
 				}
 				if (!found) {
 					suggestion_list.css("display", "none")
@@ -96,16 +93,4 @@ function animate_arrow(terminate){
 			suggestion_list.css("display", "none") //hide suggestions
 		}
 	})
-
-	//customize year select for student signin
-	$(".year-select").on("click", function(){
-		$(".year-select-flex-container").css("border-bottom", "2px solid #000")
-		$(".year-select").children("ul").toggle()
-	})
-
-	$(".year-select").find("li").on("click", function(){
-		$(".year-select-flex-container").children("p").text($(this).text())
-	})
-
-
 })(jQuery);

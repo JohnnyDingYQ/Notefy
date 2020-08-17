@@ -1,0 +1,10 @@
+.main-container{
+    display: flex;
+    justify-content: center;
+}
+
+.main-image{
+    position: relative;
+    width: 70px;
+    height: 70px;
+}

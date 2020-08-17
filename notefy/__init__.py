@@ -17,4 +17,4 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-import notefy.views
+from notefy import routing

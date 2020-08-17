@@ -6,50 +6,34 @@
 {% endblock %}
 
 {% block content %}
-<div class="flex-container">
-	<div class="title-bubble">
-	</div>
-	<div class="title-container">
-		<p class="title-text-1">An Online Note Sharing Platform</p>
-		<p class="title-text-2">Designed for Aspiring Individual Students</p>
-		<div class="button-container">
-			<button class="button-blue">LOG IN</button>
-			<button class="button-orange">SIGN UP</button>
-		</div>
-	</div>
+<div class="main-container">
+    <div class="title-picture">
+    </div>
+    <div class="title-text-container">
+        <p class="title-text-1">An Online Note Sharing Platform</p>
+        <p class="title-text-2">Designed for Aspiring Individual Students</p>
+        <div class="button-container">
+            <button class="button-blue">LOG IN</button>
+            <button class="button-orange">SIGN UP</button>
+        </div>
+    </div>
 </div>
-<img class="scrolldown-arrow" src="../static/images/icons/double-arrow-down.svg">
-<div class="login-signup-shade">
-	<div class="login-container">
-		<input type="text" placeholder="Email">
-		<input type="password" placeholder="Password">
-		<button>LOG IN</button>
-	</div>
-	<div class="signup-container">
-		<div class="school-select">
-			<input type="text" placeholder="School">
-			<ul>
-				<!--<li>YKPAO School</li>-->
-			</ul>
-		</div>
-		<div class="year-select">
-			<div class="year-select-flex-container">
-				<p>YEAR GROUP</p>
-				<img src="../static/images/icons/drop-down-arrow.svg">
-			</div>
-			<ul>
-				<li>Year 9</li>
-				<li>Year 10</li>
-				<li>Year 11</li>
-				<li>Year 12</li>
-			</ul>
-		</div>
-		<button class="signup-continue">CONTINUE</button>
-	</div>
+<img class="scrolldown-arrow" src="/static/images/icons/double-arrow-down.svg">
+<div class="login-shade">
+    <div class="login-container">
+        <img src="/static/images/inverse_bubble.svg">
+        <p>Login to NOTEFY</p>
+        <label for="username">Username or Email Address</label>
+        <input id="username">
+        <label for="password">Password</label>
+        <input id="password" type="password">
+        <p>Forget Password?</p>
+        <button>Login</button>
+    </div>
 </div>
 <div class="escaper-1"></div>
 <div class="showcase-container">
-	<h1 class="title-text-1" style="margin: 50px;">Fancy Stuff</h1>
+    <h1 class="title-text-1" style="margin: 50px;">Fancy Stuff</h1>
 </div>
 {% endblock %}
 

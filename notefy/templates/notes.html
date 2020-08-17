@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
+<link rel='stylesheet' href='/static/styles/notes.css'>
+{% endblock %}
+
+{% block content %}
+<header class="main-header">
+    <div class="icon-box">
+        <img src="/static/images/home_bubble.svg">
+    </div>
+    <div class="search-bar">
+        <img src="/static/images/icons/search-icon.svg">
+        <input>
+    </div>
+    <div class="user-box">
+        <img src="/static/images/icons/user-icon.png">
+        <p>My Name</p>
+    </div>
+</header>
+<main class="main">
+    <div class="notes-nav">
+        <ul>
+            <li><img src="/static/images/icons/notes-bank-icon.svg"><span><b>Notes Bank</b></span></li>
+            <li><img src="/static/images/icons/folder-icon.svg"><span><b>Folders</b></span></li>
+            <li><span>Random Subject</span></li>
+        </ul>
+    </div>
+    <div class="notes-content">
+        <header class="notes-header">
+            <img src="/static/images/icons/notes-bank-icon.svg"><h1>Notes Bank</h1>
+        </header>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript" src="/static/scripts/notes.js"></script>
+{% endblock %}
