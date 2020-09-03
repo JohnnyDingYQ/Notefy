@@ -3,3 +3,4 @@
 venv/*
 Illustrator Art/*
 .vscode/*
+*.code-workspace

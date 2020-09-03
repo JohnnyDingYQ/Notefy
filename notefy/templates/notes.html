@@ -7,31 +7,117 @@
 
 {% block content %}
 <header class="main-header">
-    <div class="icon-box">
-        <img src="/static/images/home_bubble.svg">
-    </div>
-    <div class="search-bar">
-        <img src="/static/images/icons/search-icon.svg">
-        <input>
-    </div>
-    <div class="user-box">
-        <img src="/static/images/icons/user-icon.png">
-        <p>My Name</p>
-    </div>
+  <div class="icon-box">
+    <img src="/static/images/home_bubble.svg">
+  </div>
+  <div class="search-bar">
+    <img src="/static/images/icons/search-icon.svg">
+    <input>
+  </div>
+  <div class="user-box">
+    <img src="/static/images/icons/user-icon.png">
+    <p>{{ current_user.username }}</p>
+  </div>
 </header>
 <main class="main">
-    <div class="notes-nav">
-        <ul>
-            <li><img src="/static/images/icons/notes-bank-icon.svg"><span><b>Notes Bank</b></span></li>
-            <li><img src="/static/images/icons/folder-icon.svg"><span><b>Folders</b></span></li>
-            <li><span>Random Subject</span></li>
-        </ul>
-    </div>
-    <div class="notes-content">
-        <header class="notes-header">
-            <img src="/static/images/icons/notes-bank-icon.svg"><h1>Notes Bank</h1>
-        </header>
-    </div>
+  <section class="notes-nav">
+    <ul>
+      <li subject="none" >
+        <img src="/static/images/icons/notes-bank-icon.svg">
+        <span><b>Notes Bank</b></span>
+      </li>
+      <li subject="none" >
+        <img src="/static/images/icons/folder-icon.svg">
+        <span><b>Folders</b></span>
+      </li>
+      {% for subject, display_text in user_subjects %}
+        <li subject="{{ subject }}">
+          <span>{{ display_text }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+  <section class="notes-content">
+    {% if subject and not folder %}
+      <header class="notes-header">
+        <img class="notes-header-icon" src="/static/images/icons/folder-icon.svg">
+        <p>{{ subject_display_name }}</p>
+      </header>
+      <div class="subject-folder">
+        <div class="my-notes">
+          <img src="/static/images/icons/upload.svg">
+          <p>My Notes</p>
+        </div>
+        <div class="favorite">
+          <img src="/static/images/icons/favorite.svg">
+          <p>Favorite</p>
+        </div>
+        <div class="mistake-collection">
+          <img src="/static/images/icons/mistake.svg">
+          <p>Mistake Collection</p>
+        </div>
+      </div>
+    {% else %}
+      <header class="notes-header">
+        {% if folder == "my-notes" %}
+          <img class="notes-bank-icon" src="/static/images/icons/smile.svg">
+          <h1>My Notes</h1>
+        {% elif folder == "favorite" %}
+          <img class="notes-bank-icon" src="/static/images/icons/favorite.svg">
+          <h1>Favorite</h1>
+        {% else %}
+          <img class="notes-bank-icon" src="/static/images/icons/notes-bank-icon.svg">
+          <h1>Notes Bank</h1>
+        {% endif %}
+        <p for="subject_arrow">Subject</p>
+        <div class="drop-down-box" id="subject_box">
+          <ul>
+            {% for subject, display_text in user_subjects %}
+              <li subject="{{ subject }}">
+                {{ display_text }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <img class="drop-down-arrow" id="subject_arrow" src="/static/images/icons/drop-down-arrow.svg">
+        <p>Topic</p>
+        <img class="drop-down-arrow" src="/static/images/icons/drop-down-arrow.svg">
+        <div style="margin-left: auto; margin-right: 30px">
+          <input type="checkbox" id="my_notes_only">
+          <label for="my_notes_only">Only show my notes</label>
+        </div>
+      </header>
+    {% endif %}
+    {% if not subject or folder == "my-notes" or folder == "favorite": %}
+      <div class="notes-list">
+        {% if folder=="my-notes": %}
+          <div class="note-block upload-block">
+            <p class="subject-title">Economics</p>
+            <i class="note-text">Upload Your Own Notes</i>
+            <img class="note-upload-img" src="/static/images/icons/upload.svg">
+          </div>
+          <div class="upload-overlay">
+            <div class="upload">
+              
+            </div>
+          </div>
+        {% endif %}
+        <div class="note-block">
+          <span class="subject-title">Economics</span>
+          <img class="tick-verified" src="/static/images/icons/tick-verified.svg">
+          <i class="note-text">
+            Topics: CH 1-Cell Biology, CH 1-Cell Biology, CH 1-Cell Biology
+          </i>
+          <img class="note-owner-img" src="/static/images/icons/user-icon.png">
+          <p class="note-owner-name">Username</p>
+          <img class="note-action-img" style="margin-left: auto;" src="/static/images/icons/red-heart.svg">
+          <span>1</span>
+          <img class="note-action-img" src="/static/images/icons/favorite.svg">
+          <span>1</span>
+        </div>
+      </div>
+    {% endif %}
+  </section>
 </main>
 {% endblock %}
 

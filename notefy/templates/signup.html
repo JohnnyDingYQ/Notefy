@@ -6,12 +6,116 @@
 {% endblock %}
 
 {% block content %}
-<div class="main-container">
-	<img src="../static/images/home_bubble.svg">
-</div>
+<main class="main-container">
+  <section class="user-data">
+    <img src="/static/images/inverse_bubble.svg">
+    <p class="slogan">Welcome to NOTEFY :)</p>
+    <div class="input-box">
+      <label for="username">Username</label>
+      <input id="username">
+      <label for="email">Email</label>
+      <input id="email">
+      <label for="password">Password</label>
+      <input type="password" id="password">
+      <label>Confirm Password</label>
+      <input type="password">
+    </div>
+  </section>
+  <section class="user-subject">
+    <p class="subject-title">Your Subjects</p>
+    <span class="subject-nav subject-nav-selected" name="language">Language</span>
+    <span class="subject-nav" name="individuals_and_society">Individuals and Society</span>
+    <span class="subject-nav" name="sciences">Sciences</span>
+    <span class="subject-nav" name="math_and_arts">Math and Arts</span>
+    <div class="subject-category" id="language">
+      <p>Language A: Language and Literature</p>
+      <input type="checkbox" id="english_a_sl">
+      <label for="english_a_sl"><span>English A SL</span></label>
+      <input type="checkbox" id="english_a_hl">
+      <label for="english_a_hl"><span>English A HL</span></label>
+      <input type="checkbox" id="chinese_a_sl">
+      <label for="chinese_a_sl"><span>Chinese A SL</span></label>
+      <input type="checkbox" id="chinese_a_hl">
+      <label for="chinese_a_hl"><span>Chinese A HL</span></label>
+      <p>Language ab initio</p>
+      <input type="checkbox" id="french_ab">
+      <label for="french_ab"><span>French ab initio</span></label>
+      <input type="checkbox" id="german_ab">
+      <label for="german_ab"><span>German ab initio</span></label>
+      <p>Language B</p>
+      <input type="checkbox" id="english_b_hl">
+      <label for="english_b_hl"><span>English B HL</span></label>
+      <input type="checkbox" id="chinese_b_hl">
+      <label for="chinese_b_hl"><span>Chinese B HL</span></label>
+    </div>
+    <div class="subject-category" id="individuals_and_society">
+      <p>History</p>
+      <input type="checkbox" id="history_sl">
+      <label for="history_sl"><span>History SL</span></label>
+      <input type="checkbox" id="history_hl">
+      <label for="history_hl"><span>History HL</span></label>
+      <p>Business</p>
+      <input type="checkbox" id="business_sl">
+      <label for="business_sl"><span>Business SL</span></label>
+      <input type="checkbox" id="business_hl">
+      <label for="business_hl"><span>Business HL</span></label>
+      <p>Economics</p>
+      <input type="checkbox" id="economic_sl">
+      <label for="economic_sl"><span>Economic SL</span></label>
+      <input type="checkbox" id="economic_hl">
+      <label for="economic_hl"><span>Economic HL</span></label>
+      <p>Psychology</p>
+      <input type="checkbox" id="psychology_sl">
+      <label for="psychology_sl"><span>Psychology SL</span></label>
+    </div>
+    <div class="subject-category" id="sciences">
+      <p>Physics</p>
+      <input type="checkbox" id="physics_sl">
+      <label for="physics_sl"><span>Physics SL</span></label>
+      <input type="checkbox" id="physics_hl">
+      <label for="physics_hl"><span>Physics HL</span></label>
+      <p>Chemistry</p>
+      <input type="checkbox" id="chemistry_sl">
+      <label for="chemistry_sl"><span>Chemistry SL</span></label>
+      <input type="checkbox" id="chemistry_hl">
+      <label for="chemistry_hl"><span>Chemistry HL</span></label>
+      <p>Biology</p>
+      <input type="checkbox" id="biology_sl">
+      <label for="biology_sl"><span>Biology SL</span></label>
+      <input type="checkbox" id="biology_hl">
+      <label for="biology_hl"><span>Biology HL</span></label>
+      <p>SEHS</p>
+      <input type="checkbox" id="sehs_sl">
+      <label for="sehs_sl"><span>SEHS SL</span></label>
+      <input type="checkbox" id="sehs_hl">
+      <label for="sehs_hl"><span>SEHS HL</span></label>
+      <p>ESS</p>
+      <input type="checkbox" id="ess_sl">
+      <label for="ess_sl"><span>ESS SL</span></label>
+    </div>
+    <div class="subject-category" id="math_and_arts">
+      <p>Math</p>
+      <input type="checkbox" id="math_sl">
+      <label for="math_sl"><span>Math SL</span></label>
+      <input type="checkbox" id="math_hl">
+      <label for="math_hl"><span>Math HL</span></label>
+      <p>Visual Art</p>
+      <input type="checkbox" id="visual_art_sl">
+      <label for="visual_art_sl"><span>Visual Art SL</span></label>
+      <input type="checkbox" id="visual_art_hl">
+      <label for="visual_art_hl"><span>Visual Art HL</span></label>
+      <p>Music</p>
+      <input type="checkbox" id="music_sl">
+      <label for="music_sl"><span>Music SL</span></label>
+      <input type="checkbox" id="music_hl">
+      <label for="music_hl"><span>Music HL</span></label>
+    </div>
+    <button id="submit-button">Confirm</button>
+  </section>
+</main>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-<script type="text/javascript" src="/static/scripts/home.js"></script>
+<script type="text/javascript" src="/static/scripts/signup.js"></script>
 {% endblock %}

@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		{% block head %}
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-		<title>{{ title }}</title>
-		<meta charset="utf-8">
-		<link rel='stylesheet' href='/static/styles/default.css'>
-		{% endblock %}
-	</head>
-	<body>
-		{% block content %}
-		{% endblock %}
+  <head>
+    {% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{{ title }}</title>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/static/styles/default.css'>
+    {% endblock %}
+  </head>
+  <body>
+    {% block content %}
+    {% endblock %}
 
-		{% block scripts %}
-		<script type="text/javascript" src="/static/libs/jquery-3.4.1.min.js"></script>
-		{% endblock %}
-	</body>
+    {% block scripts %}
+    <script type="text/javascript" src="/static/libs/jquery-3.4.1.min.js"></script>
+    {% endblock %}
+  </body>
 </html>
