@@ -33,7 +33,7 @@ class Note(db.Model):
     topics = db.Column(db.String(128), nullable=False)
 
 
-    def __init__(self, subject, topics, dict_):
+    def __init__(self, subject, topics):
         pass
 
     def get_path(self):

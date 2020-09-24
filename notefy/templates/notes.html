@@ -30,9 +30,9 @@
         <img src="/static/images/icons/folder-icon.svg">
         <span><b>Folders</b></span>
       </li>
-      {% for subject, display_text in user_subjects %}
-        <li subject="{{ subject }}">
-          <span>{{ display_text }}</span>
+      {% for s in user_subjects %}
+        <li subject="{{ s.name }}">
+          <span>{{ s.display_text }}</span>
         </li>
       {% endfor %}
     </ul>
@@ -41,7 +41,7 @@
     {% if subject and not folder %}
       <header class="notes-header">
         <img class="notes-header-icon" src="/static/images/icons/folder-icon.svg">
-        <p>{{ subject_display_name }}</p>
+        <p>{{ subject.display_text }}</p>
       </header>
       <div class="subject-folder">
         <div class="my-notes">
@@ -72,9 +72,9 @@
         <p for="subject_arrow">Subject</p>
         <div class="drop-down-box" id="subject_box">
           <ul>
-            {% for subject, display_text in user_subjects %}
-              <li subject="{{ subject }}">
-                {{ display_text }}
+            {% for s in user_subjects %}
+              <li subject="{{ s.name }}">
+                {{ s.display_text }}
               </li>
             {% endfor %}
           </ul>
@@ -98,7 +98,16 @@
           </div>
           <div class="upload-overlay">
             <div class="upload">
-              
+              <p class="upload-topic-header">{{ subject.display_text }}</p>
+              <p style="margin-bottom: 10px;">Topics:</p>
+              {% for topic in subject.topics %}
+              <div class="topics-container">
+                <input type="checkbox" id="{{ topic }}">
+                <label for="{{ topic }}"><i>{{ topic }}</i></label>
+              </div>
+              {% endfor %}
+              <input type="file" id="note_file">
+              <button id="submit_note">Submit Note</button>
             </div>
           </div>
         {% endif %}

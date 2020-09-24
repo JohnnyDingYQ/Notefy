@@ -23,3 +23,28 @@ html {
 body {
   height: 100%;
 }
+
+input[type~="checkbox"] {
+  display: none;
+}
+
+input[type~="checkbox"]:checked + label:before {
+  background-image: url(/static/images/checked.png);
+  background-size: 14px 14px;
+  background-repeat: no-repeat;
+}
+
+input[type~="checkbox"] + label:before {
+  position: relative;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #808080;
+  content: "";
+  background: #fff;
+  border-radius: 2px;
+  left: -19px;
+  top: 2px;
+  margin-right: -13px;
+  cursor: pointer;
+}

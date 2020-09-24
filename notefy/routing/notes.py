@@ -1,49 +1,58 @@
 from notefy import app
+from notefy.subject_info import subject_dict
 
-from flask import render_template, request, abort
+from flask import render_template, request, abort, jsonify
 from flask_login import login_required, current_user
 
 import json
 import os
 
+
 @app.route("/notes")
 @login_required
 def notes():
-    user_subjects = json.loads(current_user.subjects)
+    subjects = json.loads(current_user.subjects)
 
-    f = open(os.path.dirname(__file__) + '/../subject-info.json')
-    subject_info = json.load(f)
-    f.close()
+    user_subjects = [subject_dict.get(i) for i in subjects]
 
     if request.args.get("subject"):
         subject = request.args.get("subject")
-        if subject not in user_subjects:
+        if request.args.get("subject") not in subjects:
             return abort(404)
-        subject_display_name = subject_info.get(subject).get("display_text")
+        subject = subject_dict.get(subject)
     else:
         subject = None
-        subject_display_name = None
 
     if request.args.get("subject"):
         folder = request.args.get("folder")
     else:
         folder = None
-    
+
     if not subject and folder:
         return abort(404)
-
-    display_text = []
-    for s in user_subjects:
-         display_text.append(subject_info.get(s).get("display_text"))
-    user_subjects = zip(user_subjects, display_text)
-    
-    # TODO: Determine if reading json for every request is too memory intensive
 
     return render_template(
         "notes.html",
         title="Notefy",
         user_subjects=list(user_subjects),
         subject=subject,
-        subject_display_name=subject_display_name,
         folder=folder,
     )
+
+
+@app.route("/upload_notes", methods=["POST"])
+@login_required
+def upload_notes():
+    note_file = request.files.getlist("file")
+    note_topics = request.form["topics"].split(",")
+    note_subject = request.form["subject"]
+    print(note_file)
+
+    if note_subject not in subject_dict.keys():
+        return jsonify({"code": 1})
+    else:
+        subject = subject_dict.get(note_subject)
+        for t in note_topics:
+            if t not in subject.topics:
+                return jsonify({"code": 2})
+    return jsonify({"code": 0})
