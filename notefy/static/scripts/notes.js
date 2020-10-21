@@ -1,24 +1,11 @@
 (function ($) {
-  // Not original function that returns query string as some kind of dict
-  function getUrlVars() {
-    var vars = [],
-      hash;
-    var hashes = window.location.href
-      .slice(window.location.href.indexOf("?") + 1)
-      .split("&");
-    for (var i = 0; i < hashes.length; i++) {
-      hash = hashes[i].split("=");
-      vars.push(hash[0]);
-      vars[hash[0]] = hash[1];
-    }
-    return vars;
-  }
+  var queryString = new URLSearchParams(window.location.search);
 
-  if (typeof getUrlVars()["subject"] == "undefined") {
+  if (!queryString.has("subject")) {
     $(".notes-nav").find("li").first().addClass("notes-nav-selected");
   } else {
     $(".notes-nav")
-      .find($("li[subject=" + getUrlVars()["subject"] + "]"))
+      .find($("li[subject=" + queryString.get("subject") + "]"))
       .addClass("notes-nav-selected");
   }
 
@@ -47,12 +34,12 @@
     );
   });
 
-  $("#subject_arrow").on("click", function (e) {
-    $("#subject_box").toggle();
+  $(".drop-down-arrow").on("click", function (e) {
+    $(this).prev().toggle();
     e.stopPropagation();
   });
 
-  $(".upload-block").on("click", function () {
+  $(".upload-block").on("click", function (e) {
     $(".upload").show();
   });
 
@@ -60,14 +47,25 @@
     if ($(e.target).closest(".drop-down-box").length === 0) {
       $(".drop-down-box").hide();
     }
+    if (
+      $(e.target).closest(".upload").length === 0 &&
+      $(".upload-overlay").css("display") == "flex"
+    ) {
+      $(".upload-overlay").hide();
+    }
   });
 
   $("#note_file").on("change", function () {
-    var file = $(this).prop('files')[0];
+    var file = $(this).prop("files")[0];
     if (file.size > 10485760) {
       alert("File size can not exceed 10mb");
       this.value = "";
     }
+  });
+
+  $(".upload-block").on("click", function (e) {
+    $(".upload-overlay").show().css("display", "flex");
+    e.stopPropagation();
   });
 
   $("#submit_note").on("click", function () {
@@ -77,13 +75,13 @@
         topics.push($(this).find("input").attr("id"));
       }
     });
-    var file = $("#note_file").prop('files')[0];
+    var file = $("#note_file").prop("files")[0];
     var reader = new FileReader();
     reader.readAsDataURL(file);
     data = new FormData();
     data.append("file", file);
     data.append("topics", topics);
-    data.append("subject", getUrlVars()["subject"]);
+    data.append("subject", queryString.get("subject"));
     $.ajax({
       type: "POST",
       url: "/upload_notes",
@@ -92,6 +90,7 @@
       contentType: false,
       processData: false,
       success: function (response) {
+        $(".upload-overlay").hide();
         switch (response.code) {
           case 0:
             alert("Upload Success");
@@ -102,8 +101,135 @@
           case 2:
             alert("Invalid Topic");
             break;
+          case 3:
+            alert("Bad file upload");
+            break;
+          case 4:
+            alert("File extension is not allowed");
+            break;
         }
       },
     });
+  });
+
+  function changeDisplayNumber(element, value) {
+    element.text(parseInt(element.text()) + value);
+  }
+
+  var hover;
+  $(".action-like").hover(
+    function () {
+      if ($(this).attr("src") == "/static/images/icons/red-heart-empty.svg") {
+        $(this).attr("src", "/static/images/icons/red-heart.svg");
+        hover = true;
+      } else {
+        hover = false;
+      }
+    },
+    function () {
+      if (hover) {
+        $(this).attr("src", "/static/images/icons/red-heart-empty.svg");
+      }
+    }
+  );
+  $(".action-favorite").hover(
+    function () {
+      if ($(this).attr("src") == "/static/images/icons/favorite-empty.svg") {
+        $(this).attr("src", "/static/images/icons/favorite.svg");
+        hover = true;
+      } else {
+        hover = false;
+      }
+    },
+    function () {
+      if (hover) {
+        $(this).attr("src", "/static/images/icons/favorite-empty.svg");
+      }
+    }
+  );
+
+  $(".action-like, .action-favorite").on("click", function (e) {
+    e.stopPropagation();
+    var $note_block = $(this).parents(".note-block");
+    var note_id = $note_block.attr("id");
+    var data = new FormData();
+    if ($(this).hasClass("action-like")) {
+      var action = "like";
+    } else {
+      var action = "favorite";
+    }
+    data.append("note_id", note_id);
+    data.append("action", action);
+    $.ajax({
+      type: "POST",
+      url: "/handle_note_action",
+      data: data,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        switch (response.message) {
+          case "liked":
+            changeDisplayNumber($note_block.find(".note-likes"), 1);
+            $note_block
+              .find(".action-like")
+              .attr("src", "/static/images/icons/red-heart.svg");
+            hover = false;
+            break;
+          case "un-liked":
+            changeDisplayNumber($note_block.find(".note-likes"), -1);
+            $note_block
+              .find(".action-like")
+              .attr("src", "/static/images/icons/red-heart-empty.svg");
+            break;
+          case "favorite":
+            changeDisplayNumber($note_block.find(".note-favorites"), 1);
+            $note_block
+              .find(".action-favorite")
+              .attr("src", "/static/images/icons/favorite.svg");
+            hover = false;
+            break;
+          case "un-favorite":
+            changeDisplayNumber($note_block.find(".note-favorites"), -1);
+            $note_block
+              .find(".action-favorite")
+              .attr("src", "/static/images/icons/favorite-empty.svg");
+            break;
+        }
+      },
+    });
+  });
+
+  $(".drop-down-box")
+    .find("li")
+    .on("click", function () {
+      var $dropDownBox = $(this).parents(".drop-down-box");
+      if ($dropDownBox.attr("id") == "topic_box") {
+        queryString.delete("topic_filter");
+        queryString.append("topic_filter", $(this).text());
+      } else if ($dropDownBox.attr("id") == "subject_box") {
+        queryString.delete("subject_filter");
+        queryString.append("subject_filter", $(this).attr("subject"));
+      }
+      window.location.replace(
+        window.location.pathname + "?" + queryString.toString()
+      );
+    });
+
+  if (queryString.has("topic_filter")) {
+    $("#topic_box").prev().text(queryString.get("topic_filter"));
+  }
+
+  if (queryString.has("subject_filter")) {
+    var text = $("li[subject='" + queryString.get("subject_filter") + "']")
+      .first()
+      .text();
+    $("#subject_box").prev().text(text);
+  }
+
+  $(".note-block").on("click", function () {
+    if (!$(this).hasClass("upload-block")) {
+      window.open("/download_note" + "?" + "note_id=" + $(this).attr("id"));
+    }
   });
 })(jQuery);

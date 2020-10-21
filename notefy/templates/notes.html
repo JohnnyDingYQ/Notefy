@@ -62,26 +62,51 @@
         {% if folder == "my-notes" %}
           <img class="notes-bank-icon" src="/static/images/icons/smile.svg">
           <h1>My Notes</h1>
+          <p>Topic</p>
+          <div class="drop-down-box" id="topic_box">
+            <ul>
+              {% for topic in subject.topics %}
+                <li>{{ topic }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <img class="drop-down-arrow" src="/static/images/icons/drop-down-arrow.svg">
         {% elif folder == "favorite" %}
           <img class="notes-bank-icon" src="/static/images/icons/favorite.svg">
-          <h1>Favorite</h1>
+          <h1>Favorites</h1>
+          <p>Topic</p>
+          <div class="drop-down-box" id="topic_box">
+            <ul>
+              {% for topic in subject.topics %}
+                <li>{{ topic }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <img class="drop-down-arrow" src="/static/images/icons/drop-down-arrow.svg">
         {% else %}
           <img class="notes-bank-icon" src="/static/images/icons/notes-bank-icon.svg">
           <h1>Notes Bank</h1>
+          <p>Subject</p>
+          <div class="drop-down-box" id="subject_box">
+            <ul>
+              {% for s in user_subjects %}
+                <li subject="{{ s.name }}">{{ s.display_text }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <img class="drop-down-arrow" src="/static/images/icons/drop-down-arrow.svg">
+          {% if filtered_subject %}
+            <p>Topic</p>
+            <div class="drop-down-box" id="topic_box">
+              <ul>
+                {% for topic in filtered_subject.topics %}
+                  <li>{{ topic }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <img class="drop-down-arrow" src="/static/images/icons/drop-down-arrow.svg">
+          {% endif %}
         {% endif %}
-        <p for="subject_arrow">Subject</p>
-        <div class="drop-down-box" id="subject_box">
-          <ul>
-            {% for s in user_subjects %}
-              <li subject="{{ s.name }}">
-                {{ s.display_text }}
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-        <img class="drop-down-arrow" id="subject_arrow" src="/static/images/icons/drop-down-arrow.svg">
-        <p>Topic</p>
-        <img class="drop-down-arrow" src="/static/images/icons/drop-down-arrow.svg">
         <div style="margin-left: auto; margin-right: 30px">
           <input type="checkbox" id="my_notes_only">
           <label for="my_notes_only">Only show my notes</label>
@@ -92,7 +117,7 @@
       <div class="notes-list">
         {% if folder=="my-notes": %}
           <div class="note-block upload-block">
-            <p class="subject-title">Economics</p>
+            <p class="subject-title">{{ subject.display_text }}</p>
             <i class="note-text">Upload Your Own Notes</i>
             <img class="note-upload-img" src="/static/images/icons/upload.svg">
           </div>
@@ -111,19 +136,27 @@
             </div>
           </div>
         {% endif %}
-        <div class="note-block">
-          <span class="subject-title">Economics</span>
-          <img class="tick-verified" src="/static/images/icons/tick-verified.svg">
-          <i class="note-text">
-            Topics: CH 1-Cell Biology, CH 1-Cell Biology, CH 1-Cell Biology
-          </i>
-          <img class="note-owner-img" src="/static/images/icons/user-icon.png">
-          <p class="note-owner-name">Username</p>
-          <img class="note-action-img" style="margin-left: auto;" src="/static/images/icons/red-heart.svg">
-          <span>1</span>
-          <img class="note-action-img" src="/static/images/icons/favorite.svg">
-          <span>1</span>
-        </div>
+        {% for note in notes %}
+          <div class="note-block" id="note_{{ note.id }}">
+            <span class="subject-title">{{ note.get_subject_object().display_text }}</span>
+            <img class="tick-verified" src="/static/images/icons/tick-verified.svg">
+            <i class="note-text">{{ note.get_topics_as_string() }}</i>
+            <img class="note-owner-img" src="/static/images/icons/user-icon.png">
+            <p class="note-owner-name">{{ note.owner.username }}</p>
+            {% if current_user in note.liked_users %}
+              <img class="note-action-img action-like" style="margin-left: auto;" src="/static/images/icons/red-heart.svg">
+            {% else %}
+              <img class="note-action-img action-like" style="margin-left: auto;" src="/static/images/icons/red-heart-empty.svg">
+            {% endif %}
+            <span class="note-likes">{{ note.likes }}</span>
+            {% if current_user in note.favorite_users %}
+              <img class="note-action-img action-favorite" src="/static/images/icons/favorite.svg">
+            {% else %}
+              <img class="note-action-img action-favorite" src="/static/images/icons/favorite-empty.svg">
+            {% endif %}
+            <span class="note-favorites">{{ note.favorites }}</span>
+          </div>
+        {% endfor %}
       </div>
     {% endif %}
   </section>

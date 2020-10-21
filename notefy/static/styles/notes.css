@@ -132,17 +132,17 @@
   width: calc(100% - 300px);
 }
 
+.notes-header-icon {
+  height: 55%;
+  width: auto;
+  padding: 0px 10px;
+}
+
 .notes-header {
   display: flex;
   height: 60px;
   padding: 25px 40px;
   align-items: center;
-}
-
-.notes-header-icon {
-  height: 55%;
-  width: auto;
-  padding: 0px 10px;
 }
 
 .notes-header h1 {
@@ -154,8 +154,10 @@
 }
 
 .notes-header p {
-  font-size: 23px;
+  font-size: 18px;
   padding-left: 20px;
+  overflow: hidden;
+  line-height: 60px;
 }
 
 .drop-down-arrow {
@@ -167,10 +169,17 @@
 
 .drop-down-box {
   position: relative;
+  bottom: 0px;
+  left: 0px;
   display: inline-block;
   z-index: 3;
   background-color: #fff;
   display: none;
+}
+
+.drop-down-box ul::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .drop-down-box ul {
@@ -178,17 +187,25 @@
   top: 20px;
   box-shadow: 3px 3px 3px 3px #aaa;
   background-color: #fff;
+  max-height: 600px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  max-width: 300px;
+  min-width: 150px;
 }
 
 .drop-down-box li {
   height: 40px;
-  width: 140px;
+  white-space: nowrap;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   border-top: 2px solid #fff;
   border-bottom: 2px solid #fff;
+  padding: 0px 10px;
+  font-size: 13px;
 }
 
 .drop-down-box li:hover {
@@ -208,14 +225,15 @@
 
 .note-block {
   width: 380px;
-  min-height: 105px;
+  height: 155px;
   border-radius: 20px;
   box-shadow: 2px 5px 10px 0px #aaa;
   padding: 20px 30px;
   margin: 20px 2.5%;
   display: flex;
   flex-wrap: wrap;
-  justify-self: center;
+  cursor: pointer;
+  flex-direction: row;
 }
 
 .note-block:last-of-type {
@@ -239,6 +257,7 @@
   margin: 20px 0px;
   color: #aaa;
   display: block;
+  width: 100%;
 }
 
 .upload-block {
@@ -277,6 +296,7 @@
   height: 20px;
   width: auto;
   margin: 0px 7px 0px 17px;
+  cursor: pointer;
 }
 
 .subject-folder {
@@ -327,7 +347,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
 }
