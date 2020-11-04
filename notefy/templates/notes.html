@@ -40,8 +40,8 @@
   <section class="notes-content">
     {% if subject and not folder %}
       <header class="notes-header">
-        <img class="notes-header-icon" src="/static/images/icons/folder-icon.svg">
-        <p>{{ subject.display_text }}</p>
+        <img class="notes-header-icon" style="padding-right: 20px;" src="/static/images/icons/folder-icon.svg">
+        <p style="border-left: 2px solid #ccc;">{{ subject.display_text }}</p>
       </header>
       <div class="subject-folder">
         <div class="my-notes">
@@ -107,10 +107,12 @@
             <img class="drop-down-arrow" src="/static/images/icons/drop-down-arrow.svg">
           {% endif %}
         {% endif %}
-        <div style="margin-left: auto; margin-right: 30px">
-          <input type="checkbox" id="my_notes_only">
-          <label for="my_notes_only">Only show my notes</label>
-        </div>
+        {% if folder != "my-notes" %}
+          <div style="margin-left: auto; margin-right: 30px">
+            <input type="checkbox" id="my_notes_only">
+            <label for="my_notes_only">Only show my notes</label>
+          </div>
+        {% endif %}
       </header>
     {% endif %}
     {% if not subject or folder == "my-notes" or folder == "favorite": %}
@@ -140,6 +142,15 @@
           <div class="note-block" id="note_{{ note.id }}">
             <span class="subject-title">{{ note.get_subject_object().display_text }}</span>
             <img class="tick-verified" src="/static/images/icons/tick-verified.svg">
+            <p class="note-management">. .</p>
+            <ul class="note-management-box">
+              {% if note.owner == current_user %}
+                <li>
+                  <img src="/static/images/icons/trash.svg">
+                  Delete
+                </li>
+              {% endif %}
+            </ul>
             <i class="note-text">{{ note.get_topics_as_string() }}</i>
             <img class="note-owner-img" src="/static/images/icons/user-icon.png">
             <p class="note-owner-name">{{ note.owner.username }}</p>

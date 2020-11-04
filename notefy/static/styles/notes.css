@@ -96,7 +96,7 @@
   display: flex;
   font-size: 20px;
   flex-direction: row;
-  padding: 8px 10px 8px 0px;
+  padding: 12px 10px 12px 0px;
   justify-content: flex-end;
   cursor: pointer;
 }
@@ -171,7 +171,6 @@
   position: relative;
   bottom: 0px;
   left: 0px;
-  display: inline-block;
   z-index: 3;
   background-color: #fff;
   display: none;
@@ -185,31 +184,33 @@
 .drop-down-box ul {
   position: absolute;
   top: 20px;
-  box-shadow: 3px 3px 3px 3px #aaa;
+  box-shadow: 3px 5px 5px 3px #bbb;
   background-color: #fff;
   max-height: 600px;
   overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
   max-width: 300px;
-  min-width: 150px;
+  min-width: 170px;
 }
 
 .drop-down-box li {
   height: 40px;
   white-space: nowrap;
   display: flex;
-  justify-content: center;
   align-items: center;
+  padding-left: 10px;
   cursor: pointer;
   border-top: 2px solid #fff;
   border-bottom: 2px solid #fff;
   padding: 0px 10px;
-  font-size: 13px;
+  font-size: 15px;
+  border-bottom: 4px solid #fff;
 }
 
 .drop-down-box li:hover {
-  border-bottom: 2px solid #eb6c23;
+  border-bottom: 4px solid #eb6c23;
+  color: #eb6c23;
 }
 
 .notes-bank-icon {
@@ -221,11 +222,13 @@
 .notes-list {
   display: flex;
   flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .note-block {
-  width: 380px;
-  height: 155px;
+  width: 350px;
+  height: 130px;
   border-radius: 20px;
   box-shadow: 2px 5px 10px 0px #aaa;
   padding: 20px 30px;
@@ -234,6 +237,8 @@
   flex-wrap: wrap;
   cursor: pointer;
   flex-direction: row;
+  position: relative;
+  user-select: none;
 }
 
 .note-block:last-of-type {
@@ -241,34 +246,41 @@
 }
 
 .subject-title {
-  color: #41b0f0;
+  color: #5aaedf;
   font-weight: bolder;
-  font-size: 30px;
+  font-size: 25px;
   margin-right: 5px;
+  line-height: 25px;
+  height: 25px;
+  align-self: center;
 }
 
 .tick-verified {
   height: 20px;
-  width: auto;
+  width: 20px;
   align-self: center;
 }
 
 .note-text {
   margin: 20px 0px;
-  color: #aaa;
+  color: #7f7f7f;
   display: block;
   width: 100%;
+  user-select: text !important;
 }
 
 .upload-block {
   cursor: pointer;
+  position: relative;
 }
 
 .upload-block img {
   height: 60px;
   width: auto;
   margin-left: auto;
-  margin-bottom: 30px;
+  position: absolute;
+  top: 40px;
+  right: 30px;
 }
 
 .upload-block p {
@@ -310,7 +322,7 @@
   width: 100%;
   display: flex;
   margin: 20px 0px;
-  box-shadow: 8px 6px 6px 2px #aaa;
+  box-shadow: 3px 6px 6px 3px #aaa;
   align-items: center;
   cursor: pointer;
 }
@@ -328,15 +340,15 @@
 }
 
 .my-notes {
-  background-color: #0bff2c;
+  background-color: #b7e994;
 }
 
 .favorite {
-  background-color: #41b0f0;
+  background-color: #83ccdd;
 }
 
 .mistake-collection {
-  background-color: #eeb548;
+  background-color: #f9c191;
 }
 
 .upload-overlay {
@@ -426,4 +438,38 @@
   margin: 0 auto;
   margin-top: 30px;
   font-size: 20px;
+}
+
+.note-management {
+  font-size: 20px;
+  margin-left: auto;
+  font-weight: bolder;
+  color: #aaa;
+  cursor: pointer;
+  user-select: none;
+}
+
+.note-management-box {
+  display: none;
+  position: absolute;
+  top: 45px;
+  right: 25px;
+  height: 30px;
+  background-color: #ccc;
+  z-index: 3;
+  border-radius: 5px;
+}
+
+.note-management-box img {
+  width: auto;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.note-management-box li {
+  line-height: 30px;
+  padding: 0px 10px;
+  display: flex;
+  align-items: center;
+  user-select: none;
 }

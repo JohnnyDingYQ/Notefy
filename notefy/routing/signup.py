@@ -7,7 +7,7 @@ from flask_login import login_user
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
-from wtforms.validators import InputRequired, EqualTo, Email
+from wtforms.validators import InputRequired, EqualTo, Email, Length
 
 import json
 
@@ -26,7 +26,8 @@ class RegistrationForm(FlaskForm):
         "Password",
         validators=[
             InputRequired("Password can not be empty"),
-            EqualTo("confirm_password", "Password does not match")
+            EqualTo("confirm_password", "Password does not match"),
+            Length(8, 64, "Password should be between 8 and 64 characters")
         ]
     )
     confirm_password = PasswordField(
@@ -58,7 +59,7 @@ def signup():
             db.session.commit()
 
             login_user(new_user)
-            flash("Sign up success")
+            flash("Sign up success", "flash-info")
 
             return redirect(url_for("notes"))
 

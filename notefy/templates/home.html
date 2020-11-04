@@ -13,23 +13,26 @@
     <p class="title-text-1">An Online Note Sharing Platform</p>
     <p class="title-text-2">Designed for Aspiring Individual Students</p>
     <div class="button-container">
-      <button class="button-blue">LOG IN</button>
-      <button class="button-orange">SIGN UP</button>
+      <a class="button-blue">LOG IN</a>
+      <a class="button-orange" href="/signup">SIGN UP</a>
     </div>
   </div>
 </div>
 <img class="scrolldown-arrow" src="/static/images/icons/double-arrow-down.svg">
 <div class="login-shade">
-  <div class="login-container">
+  <form method="POST" action="{{ url_for('login') }}" class="login-container">
     <img src="/static/images/inverse_bubble.svg">
     <p>Login to NOTEFY</p>
-    <label for="username">Username or Email Address</label>
-    <input id="username">
-    <label for="password">Password</label>
-    <input id="password" type="password">
-    <p>Forgot Password?</p>
+    {{ form.username.label }}
+    {{ form.username }}
+
+    {{ form.password.label }}
+    {{ form.password }}
+    <a id="forgot_password" href="/reset_password">Forgot Password?</a>
+    {{ form.csrf_token }}
+    {{ form.name }}
     <button id="login_button">Login</button>
-  </div>
+  </form>
 </div>
 <div class="escaper-1"></div>
 <div class="showcase-container">

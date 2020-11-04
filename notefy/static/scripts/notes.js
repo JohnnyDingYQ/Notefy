@@ -53,6 +53,9 @@
     ) {
       $(".upload-overlay").hide();
     }
+    if ($(e.target).closest(".note-management-box").length === 0) {
+      $(".note-management-box").hide();
+    }
   });
 
   $("#note_file").on("change", function () {
@@ -232,4 +235,58 @@
       window.open("/download_note" + "?" + "note_id=" + $(this).attr("id"));
     }
   });
+
+  $(".note-management").on("click", function (e) {
+    e.stopPropagation();
+    $(this).next().toggle();
+  });
+
+  $(".note-management-box")
+    .find("li")
+    .first()
+    .on("click", function (e) {
+      var note_id = $(this)
+        .parents(".note-block")
+        .attr("id")
+        .match(/(?<=note_)\d*/)[0];
+      var data = new FormData();
+      var $note_block = $(this).parents(".note-block");
+      data.append("note_id", note_id);
+      e.stopPropagation();
+      $.ajax({
+        type: "POST",
+        url: "/delete_note",
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+          switch (response.code) {
+            case 1:
+              $note_block.remove();
+              break;
+            case 2:
+              alert("Stop deleting other's notes");
+              break;
+            case 3:
+              alert("Unknown error");
+              break;
+          }
+        },
+      });
+    });
+  $("#my_notes_only").on("click", function () {
+    if ($(this).is(":checked")) {
+      queryString.append("my_notes_only", "true");
+    } else {
+      queryString.delete("my_notes_only");
+    }
+    window.location.replace(
+      window.location.pathname + "?" + queryString.toString()
+    );
+  });
+
+  if (queryString.has("my_notes_only")) {
+    $("#my_notes_only").prop("checked", true);
+  }
 })(jQuery);

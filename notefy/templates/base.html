@@ -2,18 +2,60 @@
 <html>
   <head>
     {% block head %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>{{ title }}</title>
-    <meta charset="utf-8">
-    <link rel='stylesheet' href='/static/styles/default.css'>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+      <title>{{ title }}</title>
+      <meta charset="utf-8">
+      <link rel='stylesheet' href='/static/styles/default.css'>
+      <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+      <!--Partial icon credit to fontawesome.com. Link to license https://fontawesome.com/license-->
     {% endblock %}
   </head>
   <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-container">
+        {% for category, message in messages %}
+          <li class="{{ category }}">
+            <img>
+            {{ message }}
+            <img class="flash-cancel" src="/static/images/icons/cross.svg">
+          </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
     {% block content %}
     {% endblock %}
 
     {% block scripts %}
-    <script type="text/javascript" src="/static/libs/jquery-3.4.1.min.js"></script>
+      <script type="text/javascript" src="/static/libs/jquery-3.4.1.min.js"></script>
+      <script>
+        $(".flash-cancel").on("click", function() {
+          $(this).parent("li").remove();
+        });
+        function ajaxFlash(message, category) {
+          if (!$(".flash-container").length) {
+            $("body").prepend($("<ul>").addClass("flash-container"));
+            console.log("hi");
+          }
+          $(".flash-container").append(
+            $("<li>")
+              .addClass(category)
+              .append($("<img>"))
+              .append($("<p>").text(message))
+              .append(
+                $("<img>")
+                  .attr("src", "/static/images/icons/cross.svg")
+                  .addClass("flash-cancel")
+                  .on("click", function() {
+                    $(this).parent("ul").remove();
+                  })
+              )
+          );
+          $(window).scrollTop(0);
+        }
+      </script>
     {% endblock %}
   </body>
 </html>

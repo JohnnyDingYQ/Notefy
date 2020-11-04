@@ -3,7 +3,14 @@ from notefy.subject_info import subject_dict
 from notefy.helper import allowed_file
 from notefy.models import Note
 
-from flask import render_template, request, abort, jsonify, send_file
+from flask import (
+    render_template,
+    request,
+    abort,
+    jsonify,
+    send_file,
+    flash
+)
 from flask_login import login_required, current_user
 
 import json
@@ -19,7 +26,7 @@ def notes():
 
     user_subjects = [subject_dict.get(i) for i in subjects]
 
-    notes = Note.query
+    notes = Note.query.filter(Note.subject.in_(subjects))
 
     if request.args.get("subject"):
         subject = request.args.get("subject")
@@ -46,12 +53,14 @@ def notes():
     else:
         folder = None
 
+    if request.args.get("my_notes_only"):
+        notes = notes.filter(Note.owner == current_user)
+
     notes = notes.all()
 
     if request.args.get("topic_filter"):
         topic_filter = urllib.parse.unquote(request.args.get("topic_filter"))
         notes = [n for n in notes if topic_filter in json.loads(n.topics)]
-        # noqa: 
     if not subject and folder:
         return abort(404)
 
@@ -84,7 +93,6 @@ def upload_notes():
             if t not in subject.topics:
                 return jsonify({"code": 2})
     if allowed_file(note_file.filename):
-        db.session.commit()
         new_note = Note(
             note_subject,
             json.dumps(note_topics),
@@ -109,6 +117,7 @@ def upload_notes():
     return jsonify({"code": 4})
 
 
+# note action specifically means likes and favorites
 @app.route("/handle_note_action", methods=["POST"])
 @login_required
 def handle_note_action():
@@ -147,3 +156,21 @@ def download_note():
     return send_file(
         "uploads" + "/notes/" + str(note.id) + "." + note.file_ext
     )
+
+
+@app.route("/delete_note", methods=["POST"])
+@login_required
+def delete_note():
+    note_id = request.form["note_id"]
+    note = Note.query.filter_by(id=note_id).one()
+    if note.owner == current_user:
+        d = os.path.dirname(__file__)
+        path = d + "/../uploads/notes/" + str(note.id) + "." + note.file_ext
+        if os.path.isfile(path):
+            os.remove(path)
+            db.session.delete(note)
+            db.session.commit()
+            return jsonify({"code": 1})
+    else:
+        return jsonify({"code": 2})
+    return jsonify({"code": 3})

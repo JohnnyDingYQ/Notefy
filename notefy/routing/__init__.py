@@ -11,3 +11,4 @@ from .signup import *
 from .home import *
 from .notes import *
 from .misc import *
+from .reset_password import *

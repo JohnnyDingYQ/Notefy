@@ -70,8 +70,6 @@ function animate_arrow(terminate) {
     if ($(this).hasClass("button-blue")) {
       $(".escaper-1, .showcase-container, .scrolldown-arrow").toggle(); //hide elements below to prevent scroll. Also hides arrow
       $(".login-shade").fadeIn(600).css("display", "flex"); //show shade and login/signup box
-    } else {
-      window.location.href = "/signup";
     }
   });
 
@@ -119,22 +117,4 @@ function animate_arrow(terminate) {
         suggestion_list.css("display", "none"); //hide suggestions
       }
     });
-
-  // Login stuff
-  $("#login_button").on("click", function () {
-    // TODO: Data Validation
-    var user_data = { user: {} };
-    user_data.user.username = $("#username").val();
-    user_data.user.password = $("#password").val();
-    $.ajax({
-      type: "POST",
-      url: "/login",
-      data: { data: JSON.stringify(user_data) },
-      success: function (response) {
-        if (response.login == "success") {
-          window.location.href = "/notes";
-        }
-      },
-    });
-  });
 })(jQuery);
